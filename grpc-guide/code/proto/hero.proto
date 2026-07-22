@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package hero;
+
+// Service definition showcasing all 4 RPC communication patterns
+service HeroService {
+  // 1. Unary RPC: Standard Request -> Response
+  rpc GetHero (HeroRequest) returns (HeroResponse);
+
+  // 2. Server Streaming RPC: 1 Request -> Stream of Responses
+  rpc StreamHeroPowers (HeroRequest) returns (stream PowerResponse);
+
+  // 3. Client Streaming RPC: Stream of Requests -> 1 Response
+  rpc CollectBattleMetrics (stream BattleMetric) returns (BattleSummary);
+
+  // 4. Bidirectional Streaming RPC: Stream of Requests <-> Stream of Responses
+  rpc HeroLiveChat (stream ChatMessage) returns (stream ChatMessage);
+}
+
+// Data models
+message HeroRequest {
+  string hero_id = 1;
+}
+
+message HeroResponse {
+  string hero_id = 1;
+  string name = 2;
+  string alias = 3;
+  int32 power_level = 4;
+  repeated string abilities = 5;
+}
+
+message PowerResponse {
+  string power_name = 1;
+  int32 intensity = 2;
+  string status = 3;
+}
+
+message BattleMetric {
+  string battle_id = 1;
+  int32 damage_dealt = 2;
+  int32 damage_taken = 3;
+  int64 timestamp = 4;
+}
+
+message BattleSummary {
+  string battle_id = 1;
+  int32 total_damage_dealt = 2;
+  int32 total_damage_taken = 3;
+  string combat_rating = 4;
+}
+
+message ChatMessage {
+  string sender = 1;
+  string message = 2;
+  int64 timestamp = 3;
+}
